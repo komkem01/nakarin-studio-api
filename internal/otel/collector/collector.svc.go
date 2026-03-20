@@ -8,8 +8,8 @@ import (
 	"math/big"
 	"math/rand"
 
-	"mcop/internal/config"
-	"mcop/internal/provider"
+	"nakarin-studio/internal/config"
+	"nakarin-studio/internal/provider"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"

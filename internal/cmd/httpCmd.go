@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"mcop/internal/http"
+	"nakarin-studio/internal/http"
 
 	"github.com/spf13/cobra"
 )

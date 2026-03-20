@@ -1,6 +1,6 @@
 package config
 
-import "mcop/internal/kafka"
+import "nakarin-studio/internal/kafka"
 
 // Def.
 var kafkaConf = kafka.Config{

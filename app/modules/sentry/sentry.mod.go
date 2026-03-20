@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"mcop/internal/provider"
+	"nakarin-studio/internal/provider"
 
-	"mcop/internal/config"
+	"nakarin-studio/internal/config"
 
 	"github.com/getsentry/sentry-go"
 	"go.opentelemetry.io/otel"
@@ -34,7 +34,7 @@ type Config struct {
 }
 
 func New(conf *config.Config[Config]) *Module {
-	tracer := otel.Tracer("mcop.storage.sentry")
+	tracer := otel.Tracer("nakarin-studio.storage.sentry")
 	svc := newService(&Options{
 		Config: conf,
 		tracer: tracer,

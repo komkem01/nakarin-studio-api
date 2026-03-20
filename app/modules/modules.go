@@ -4,19 +4,19 @@ import (
 	"log/slog"
 	"sync"
 
-	"mcop/app/modules/entities"
-	"mcop/app/modules/example"
-	"mcop/app/modules/sentry"
-	"mcop/app/modules/specs"
-	"mcop/internal/config"
-	"mcop/internal/database"
-	"mcop/internal/log"
-	"mcop/internal/otel/collector"
+	"nakarin-studio/app/modules/entities"
+	"nakarin-studio/app/modules/example"
+	"nakarin-studio/app/modules/sentry"
+	"nakarin-studio/app/modules/specs"
+	"nakarin-studio/internal/config"
+	"nakarin-studio/internal/database"
+	"nakarin-studio/internal/log"
+	"nakarin-studio/internal/otel/collector"
 
-	exampletwo "mcop/app/modules/example-two"
+	exampletwo "nakarin-studio/app/modules/example-two"
 
-	appConf "mcop/config"
-	// "mcop/app/modules/kafka"
+	appConf "nakarin-studio/config"
+	// "nakarin-studio/app/modules/kafka"
 )
 
 type Modules struct {

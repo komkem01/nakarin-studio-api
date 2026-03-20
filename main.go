@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"os"
 
-	"mcop/app/console"
-	"mcop/internal/cmd"
+	"nakarin-studio/app/console"
+	"nakarin-studio/internal/cmd"
 
 	"github.com/spf13/cobra"
 )

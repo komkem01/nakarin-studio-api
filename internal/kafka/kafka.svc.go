@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"mcop/app/utils/syncx"
-	"mcop/internal/config"
-	kafkainf "mcop/internal/kafka/inf"
-	"mcop/internal/log"
-	"mcop/internal/provider"
+	"nakarin-studio/app/utils/syncx"
+	"nakarin-studio/internal/config"
+	kafkainf "nakarin-studio/internal/kafka/inf"
+	"nakarin-studio/internal/log"
+	"nakarin-studio/internal/provider"
 
 	"github.com/IBM/sarama"
 )

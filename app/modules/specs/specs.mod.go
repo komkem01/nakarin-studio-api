@@ -1,7 +1,7 @@
 package specs
 
 import (
-	"mcop/internal/config"
+	"nakarin-studio/internal/config"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
@@ -26,7 +26,7 @@ type Module struct {
 }
 
 func New(conf *config.Config[Config]) *Module {
-	tracer := otel.Tracer("mcop.storage.specs")
+	tracer := otel.Tracer("nakarin-studio.storage.specs")
 
 	return &Module{
 		tracer:  tracer,

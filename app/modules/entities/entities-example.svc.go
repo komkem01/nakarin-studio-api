@@ -3,8 +3,8 @@ package entities
 import (
 	"context"
 
-	"mcop/app/modules/entities/ent"
-	entitiesinf "mcop/app/modules/entities/inf"
+	"nakarin-studio/app/modules/entities/ent"
+	entitiesinf "nakarin-studio/app/modules/entities/inf"
 
 	"github.com/google/uuid"
 )

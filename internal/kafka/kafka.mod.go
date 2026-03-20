@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"mcop/internal/config"
+	"nakarin-studio/internal/config"
 )
 
 type Module struct {

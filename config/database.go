@@ -1,8 +1,8 @@
 package config
 
 import (
-	dbdto "mcop/internal/database/dto"
-	rddto "mcop/internal/redis/dto"
+	dbdto "nakarin-studio/internal/database/dto"
+	rddto "nakarin-studio/internal/redis/dto"
 )
 
 type Database struct {

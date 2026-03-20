@@ -1,8 +1,8 @@
 package exampletwo
 
 import (
-	entitiesinf "mcop/app/modules/entities/inf"
-	"mcop/internal/config"
+	entitiesinf "nakarin-studio/app/modules/entities/inf"
+	"nakarin-studio/internal/config"
 )
 
 type (

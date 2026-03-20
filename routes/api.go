@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"mcop/app/modules"
+	"nakarin-studio/app/modules"
 
 	"github.com/gin-gonic/gin"
 )

@@ -3,11 +3,11 @@ package cmd
 import (
 	"strings"
 
-	appConf "mcop/config"
-	"mcop/database/migrations"
-	"mcop/internal/config"
-	"mcop/internal/database"
-	"mcop/internal/log"
+	appConf "nakarin-studio/config"
+	"nakarin-studio/database/migrations"
+	"nakarin-studio/internal/config"
+	"nakarin-studio/internal/database"
+	"nakarin-studio/internal/log"
 
 	"github.com/spf13/cobra"
 	"github.com/uptrace/bun/migrate"

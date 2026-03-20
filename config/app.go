@@ -1,13 +1,13 @@
 package config
 
 import (
-	"mcop/app/modules/example"
-	exampletwo "mcop/app/modules/example-two"
-	"mcop/app/modules/sentry"
-	"mcop/app/modules/specs"
-	"mcop/internal/kafka"
-	"mcop/internal/log"
-	"mcop/internal/otel/collector"
+	"nakarin-studio/app/modules/example"
+	exampletwo "nakarin-studio/app/modules/example-two"
+	"nakarin-studio/app/modules/sentry"
+	"nakarin-studio/app/modules/specs"
+	"nakarin-studio/internal/kafka"
+	"nakarin-studio/internal/log"
+	"nakarin-studio/internal/otel/collector"
 )
 
 // Config is a struct that contains all the configuration of the application.
@@ -52,9 +52,9 @@ var App = Config{
 
 	HttpJsonNaming: "snake_case",
 
-	SslCaPath:      "mcop/cert/ca.pem",
-	SslPrivatePath: "mcop/cert/server.pem",
-	SslCertPath:    "mcop/cert/server-key.pem",
+	SslCaPath:      "nakarin-studio/cert/ca.pem",
+	SslPrivatePath: "nakarin-studio/cert/server.pem",
+	SslCertPath:    "nakarin-studio/cert/server-key.pem",
 
 	Otel: collector.Config{
 		CollectorEndpoint: "",

@@ -3,9 +3,9 @@ package redis
 import (
 	"context"
 
-	"mcop/internal/provider"
+	"nakarin-studio/internal/provider"
 
-	dto "mcop/internal/redis/dto"
+	dto "nakarin-studio/internal/redis/dto"
 )
 
 type RedisModule struct {

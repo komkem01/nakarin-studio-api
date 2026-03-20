@@ -9,10 +9,10 @@ import (
 	"os"
 	"time"
 
-	"mcop/app/modules"
-	"mcop/internal/log"
-	"mcop/internal/provider"
-	"mcop/routes"
+	"nakarin-studio/app/modules"
+	"nakarin-studio/internal/log"
+	"nakarin-studio/internal/provider"
+	"nakarin-studio/routes"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"

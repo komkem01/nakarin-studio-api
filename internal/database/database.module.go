@@ -3,8 +3,8 @@ package database
 import (
 	"context"
 
-	dto "mcop/internal/database/dto"
-	"mcop/internal/provider"
+	dto "nakarin-studio/internal/database/dto"
+	"nakarin-studio/internal/provider"
 )
 
 type DatabaseModule struct {
