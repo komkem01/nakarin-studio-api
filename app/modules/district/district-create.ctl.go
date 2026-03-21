@@ -1,15 +1,10 @@
-package gender
+package district
 
 import (
 	"nakarin-studio/app/utils/base"
 
 	"github.com/gin-gonic/gin"
 )
-
-type CreateRequest struct {
-	Name     string `json:"name" binding:"required"`
-	IsActive *bool  `json:"is_active"`
-}
 
 func (c *Controller) Create(ctx *gin.Context) {
 	var req CreateRequest
@@ -23,9 +18,9 @@ func (c *Controller) Create(ctx *gin.Context) {
 		isActive = *req.IsActive
 	}
 
-	_, err := c.svc.Create(ctx.Request.Context(), req.Name, isActive)
+	_, err := c.svc.Create(ctx.Request.Context(), req.ProvinceID, req.Name, isActive)
 	if err != nil {
-		base.InternalServerError(ctx, "gender-create-failed", nil)
+		base.InternalServerError(ctx, "district-create-failed", nil)
 		return
 	}
 

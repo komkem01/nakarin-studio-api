@@ -1,4 +1,4 @@
-package gender
+package province
 
 import (
 	"nakarin-studio/app/utils/base"
@@ -17,17 +17,14 @@ func (c *Controller) Create(ctx *gin.Context) {
 		base.BadRequest(ctx, "invalid-request", nil)
 		return
 	}
-
 	isActive := true
 	if req.IsActive != nil {
 		isActive = *req.IsActive
 	}
-
 	_, err := c.svc.Create(ctx.Request.Context(), req.Name, isActive)
 	if err != nil {
-		base.InternalServerError(ctx, "gender-create-failed", nil)
+		base.InternalServerError(ctx, "province-create-failed", nil)
 		return
 	}
-
 	base.Success(ctx, nil, "success")
 }

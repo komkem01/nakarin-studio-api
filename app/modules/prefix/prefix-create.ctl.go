@@ -1,4 +1,4 @@
-package gender
+package prefix
 
 import (
 	"nakarin-studio/app/utils/base"
@@ -7,6 +7,7 @@ import (
 )
 
 type CreateRequest struct {
+	GenderID string `json:"gender_id" binding:"required"`
 	Name     string `json:"name" binding:"required"`
 	IsActive *bool  `json:"is_active"`
 }
@@ -23,9 +24,9 @@ func (c *Controller) Create(ctx *gin.Context) {
 		isActive = *req.IsActive
 	}
 
-	_, err := c.svc.Create(ctx.Request.Context(), req.Name, isActive)
+	_, err := c.svc.Create(ctx.Request.Context(), req.GenderID, req.Name, isActive)
 	if err != nil {
-		base.InternalServerError(ctx, "gender-create-failed", nil)
+		base.InternalServerError(ctx, "prefix-create-failed", nil)
 		return
 	}
 

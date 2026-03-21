@@ -27,3 +27,59 @@ type GenderEntity interface {
 	ListGenders(ctx context.Context, isActive *bool) ([]*ent.GenderEntity, error)
 	DeleteGenderByID(ctx context.Context, id string) error
 }
+
+type PrefixEntity interface {
+	CreatePrefix(ctx context.Context, genderID string, name string, isActive bool) (*ent.PrefixEntity, error)
+	GetPrefixByID(ctx context.Context, id string) (*ent.PrefixEntity, error)
+	UpdatePrefixByID(ctx context.Context, id string, genderID *string, name *string, isActive *bool) (*ent.PrefixEntity, error)
+	ListPrefixes(ctx context.Context, genderID *string, isActive *bool) ([]*ent.PrefixEntity, error)
+	DeletePrefixByID(ctx context.Context, id string) error
+}
+
+type ProvinceEntity interface {
+	CreateProvince(ctx context.Context, name string, isActive bool) (*ent.ProvinceEntity, error)
+	GetProvinceByID(ctx context.Context, id string) (*ent.ProvinceEntity, error)
+	UpdateProvinceByID(ctx context.Context, id string, name *string, isActive *bool) (*ent.ProvinceEntity, error)
+	ListProvinces(ctx context.Context, isActive *bool) ([]*ent.ProvinceEntity, error)
+	DeleteProvinceByID(ctx context.Context, id string) error
+}
+
+type DistrictEntity interface {
+	CreateDistrict(ctx context.Context, provinceID string, name string, isActive bool) (*ent.DistrictEntity, error)
+	GetDistrictByID(ctx context.Context, id string) (*ent.DistrictEntity, error)
+	UpdateDistrictByID(ctx context.Context, id string, provinceID *string, name *string, isActive *bool) (*ent.DistrictEntity, error)
+	ListDistricts(ctx context.Context, provinceID *string, isActive *bool) ([]*ent.DistrictEntity, error)
+	DeleteDistrictByID(ctx context.Context, id string) error
+}
+
+type SubDistrictEntity interface {
+	CreateSubDistrict(ctx context.Context, districtID string, name string, isActive bool) (*ent.SubDistrictEntity, error)
+	GetSubDistrictByID(ctx context.Context, id string) (*ent.SubDistrictEntity, error)
+	UpdateSubDistrictByID(ctx context.Context, id string, districtID *string, name *string, isActive *bool) (*ent.SubDistrictEntity, error)
+	ListSubDistricts(ctx context.Context, districtID *string, isActive *bool) ([]*ent.SubDistrictEntity, error)
+	DeleteSubDistrictByID(ctx context.Context, id string) error
+}
+
+type ZipcodeEntity interface {
+	CreateZipcode(ctx context.Context, subDistrictID string, name string, isActive bool) (*ent.ZipcodeEntity, error)
+	GetZipcodeByID(ctx context.Context, id string) (*ent.ZipcodeEntity, error)
+	UpdateZipcodeByID(ctx context.Context, id string, subDistrictID *string, name *string, isActive *bool) (*ent.ZipcodeEntity, error)
+	ListZipcodes(ctx context.Context, subDistrictID *string, isActive *bool) ([]*ent.ZipcodeEntity, error)
+	DeleteZipcodeByID(ctx context.Context, id string) error
+}
+
+type BookingEntity interface {
+	CreateBooking(ctx context.Context, bookingNo string, status *string, payment *string) (*ent.BookingEntity, error)
+	GetBookingByID(ctx context.Context, id string) (*ent.BookingEntity, error)
+	UpdateBookingByID(ctx context.Context, id string, bookingNo *string, status *string, payment *string) (*ent.BookingEntity, error)
+	ListBookings(ctx context.Context, status *string, payment *string) ([]*ent.BookingEntity, error)
+	DeleteBookingByID(ctx context.Context, id string) error
+}
+
+type BookingDetailEntity interface {
+	CreateBookingDetail(ctx context.Context, bookingID string, firstName string, lastName *string, phone string) (*ent.BookingDetailEntity, error)
+	GetBookingDetailByID(ctx context.Context, id string) (*ent.BookingDetailEntity, error)
+	UpdateBookingDetailByID(ctx context.Context, id string, bookingID *string, firstName *string, lastName *string, phone *string) (*ent.BookingDetailEntity, error)
+	ListBookingDetails(ctx context.Context, bookingID *string) ([]*ent.BookingDetailEntity, error)
+	DeleteBookingDetailByID(ctx context.Context, id string) error
+}

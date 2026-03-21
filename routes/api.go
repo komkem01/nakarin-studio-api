@@ -30,5 +30,68 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			gender.PATCH("/:id", mod.Gender.Ctl.Update)
 			gender.DELETE("/:id", mod.Gender.Ctl.Delete)
 		}
+
+		prefix := system.Group("/prefixes")
+		{
+			prefix.POST("", mod.Prefix.Ctl.Create)
+			prefix.GET("", mod.Prefix.Ctl.List)
+			prefix.GET("/:id", mod.Prefix.Ctl.Info)
+			prefix.PATCH("/:id", mod.Prefix.Ctl.Update)
+			prefix.DELETE("/:id", mod.Prefix.Ctl.Delete)
+		}
+
+		province := system.Group("/provinces")
+		{
+			province.POST("", mod.Province.Ctl.Create)
+			province.GET("", mod.Province.Ctl.List)
+			province.GET("/:id", mod.Province.Ctl.Info)
+			province.PATCH("/:id", mod.Province.Ctl.Update)
+			province.DELETE("/:id", mod.Province.Ctl.Delete)
+		}
+
+		district := system.Group("/districts")
+		{
+			district.POST("", mod.District.Ctl.Create)
+			district.GET("", mod.District.Ctl.List)
+			district.GET("/:id", mod.District.Ctl.Info)
+			district.PATCH("/:id", mod.District.Ctl.Update)
+			district.DELETE("/:id", mod.District.Ctl.Delete)
+		}
+
+		subDistrict := system.Group("/sub-districts")
+		{
+			subDistrict.POST("", mod.SubDistrict.Ctl.Create)
+			subDistrict.GET("", mod.SubDistrict.Ctl.List)
+			subDistrict.GET("/:id", mod.SubDistrict.Ctl.Info)
+			subDistrict.PATCH("/:id", mod.SubDistrict.Ctl.Update)
+			subDistrict.DELETE("/:id", mod.SubDistrict.Ctl.Delete)
+		}
+
+		zipcode := system.Group("/zipcodes")
+		{
+			zipcode.POST("", mod.Zipcode.Ctl.Create)
+			zipcode.GET("", mod.Zipcode.Ctl.List)
+			zipcode.GET("/:id", mod.Zipcode.Ctl.Info)
+			zipcode.PATCH("/:id", mod.Zipcode.Ctl.Update)
+			zipcode.DELETE("/:id", mod.Zipcode.Ctl.Delete)
+		}
+
+		booking := system.Group("/bookings")
+		{
+			booking.POST("", mod.Booking.Ctl.Create)
+			booking.GET("", mod.Booking.Ctl.List)
+			booking.GET("/:id", mod.Booking.Ctl.Info)
+			booking.PATCH("/:id", mod.Booking.Ctl.Update)
+			booking.DELETE("/:id", mod.Booking.Ctl.Delete)
+		}
+
+		bookingDetail := system.Group("/booking-details")
+		{
+			bookingDetail.POST("", mod.BookingDetail.Ctl.Create)
+			bookingDetail.GET("", mod.BookingDetail.Ctl.List)
+			bookingDetail.GET("/:id", mod.BookingDetail.Ctl.Info)
+			bookingDetail.PATCH("/:id", mod.BookingDetail.Ctl.Update)
+			bookingDetail.DELETE("/:id", mod.BookingDetail.Ctl.Delete)
+		}
 	}
 }

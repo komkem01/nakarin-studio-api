@@ -1,10 +1,18 @@
 package config
 
 import (
+	"nakarin-studio/app/modules/booking"
+	"nakarin-studio/app/modules/bookingdetail"
+	"nakarin-studio/app/modules/district"
 	"nakarin-studio/app/modules/example"
 	exampletwo "nakarin-studio/app/modules/example-two"
+	"nakarin-studio/app/modules/gender"
+	"nakarin-studio/app/modules/prefix"
+	"nakarin-studio/app/modules/province"
 	"nakarin-studio/app/modules/sentry"
 	"nakarin-studio/app/modules/specs"
+	"nakarin-studio/app/modules/subdistrict"
+	"nakarin-studio/app/modules/zipcode"
 	"nakarin-studio/internal/kafka"
 	"nakarin-studio/internal/log"
 	"nakarin-studio/internal/otel/collector"
@@ -32,6 +40,15 @@ type Config struct {
 
 	Kafka kafka.Config
 	Log   log.Option
+
+	Gender        gender.Config
+	Prefix        prefix.Config
+	Province      province.Config
+	District      district.Config
+	SubDistrict   subdistrict.Config
+	Zipcode       zipcode.Config
+	Booking       booking.Config
+	BookingDetail bookingdetail.Config
 
 	Example example.Config
 

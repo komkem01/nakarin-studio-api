@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"regexp"
 	"strconv"
+	"strings"
 	"unicode"
 
 	ci18n "nakarin-studio/config/i18n"
@@ -72,14 +73,33 @@ func (c conventionalMarshallerFromPascal) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if c.Value == nil {
+		return marshalled, nil
+	}
+
 	naming, ok := os.LookupEnv("HTTP_JSON_NAMING")
 	if !ok {
 		naming = "snake_case"
 	}
+	naming = strings.TrimSpace(strings.ToLower(naming))
+	switch naming {
+	case "snakecase":
+		naming = "snake_case"
+	case "camelcase", "camel_case", "camel-case":
+		naming = "camel_case"
+	case "pascalcase", "pascal_case", "pascal-case":
+		naming = "pascal_case"
+	}
 
 	val := reflect.TypeOf(c.Value)
+	if val == nil {
+		return marshalled, nil
+	}
 
 	if val.Kind() == reflect.Ptr {
+		if reflect.ValueOf(c.Value).IsNil() {
+			return marshalled, nil
+		}
 		val = val.Elem()
 	}
 
@@ -112,7 +132,16 @@ func (c conventionalMarshallerFromPascal) MarshalJSON() ([]byte, error) {
 	case "pascal_case":
 		return marshalled, nil
 	default:
-		return nil, err
+		// Keep response valid JSON if naming is unknown.
+		converted = keyMatchRegex.ReplaceAllFunc(
+			marshalled,
+			func(match []byte) []byte {
+				return bytes.ToLower(wordBarrierRegex.ReplaceAll(
+					match,
+					[]byte(`${1}_${2}`),
+				))
+			},
+		)
 	}
 
 	return converted, nil
