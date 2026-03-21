@@ -14,6 +14,8 @@ import (
 	"nakarin-studio/app/modules/memberaddress"
 	"nakarin-studio/app/modules/memberbooking"
 	"nakarin-studio/app/modules/prefix"
+	"nakarin-studio/app/modules/product"
+	"nakarin-studio/app/modules/productimage"
 	"nakarin-studio/app/modules/province"
 	"nakarin-studio/app/modules/sentry"
 	"nakarin-studio/app/modules/specs"
@@ -49,6 +51,8 @@ type Modules struct {
 	Member        *member.Module
 	MemberAddress *memberaddress.Module
 	MemberBooking *memberbooking.Module
+	Product       *product.Module
+	ProductImage  *productimage.Module
 	// Kafka *kafka.Module
 	Example  *example.Module
 	Example2 *exampletwo.Module
@@ -78,6 +82,8 @@ func modulesInit() {
 	memberMod := member.New(config.Conf[member.Config](confMod.Svc), entitiesMod.Svc)
 	memberAddressMod := memberaddress.New(config.Conf[memberaddress.Config](confMod.Svc), entitiesMod.Svc)
 	memberBookingMod := memberbooking.New(config.Conf[memberbooking.Config](confMod.Svc), entitiesMod.Svc)
+	productMod := product.New(config.Conf[product.Config](confMod.Svc), entitiesMod.Svc)
+	productImageMod := productimage.New(config.Conf[productimage.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod := example.New(config.Conf[example.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod2 := exampletwo.New(config.Conf[exampletwo.Config](confMod.Svc), entitiesMod.Svc)
 	// kafka := kafka.New(&conf.Kafka)
@@ -100,6 +106,8 @@ func modulesInit() {
 		Member:        memberMod,
 		MemberAddress: memberAddressMod,
 		MemberBooking: memberBookingMod,
+		Product:       productMod,
+		ProductImage:  productImageMod,
 		Example:       exampleMod,
 		Example2:      exampleMod2,
 	}

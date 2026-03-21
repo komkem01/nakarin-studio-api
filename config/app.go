@@ -11,6 +11,8 @@ import (
 	"nakarin-studio/app/modules/memberaddress"
 	"nakarin-studio/app/modules/memberbooking"
 	"nakarin-studio/app/modules/prefix"
+	"nakarin-studio/app/modules/product"
+	"nakarin-studio/app/modules/productimage"
 	"nakarin-studio/app/modules/province"
 	"nakarin-studio/app/modules/sentry"
 	"nakarin-studio/app/modules/specs"
@@ -55,6 +57,8 @@ type Config struct {
 	Member        member.Config
 	MemberAddress memberaddress.Config
 	MemberBooking memberbooking.Config
+	Product       product.Config
+	ProductImage  productimage.Config
 
 	Example example.Config
 

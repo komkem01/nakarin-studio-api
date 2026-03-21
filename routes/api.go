@@ -120,5 +120,23 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			memberAddress.PATCH("/:id", mod.MemberAddress.Ctl.Update)
 			memberAddress.DELETE("/:id", mod.MemberAddress.Ctl.Delete)
 		}
+
+		product := system.Group("/products")
+		{
+			product.POST("", mod.Product.Ctl.Create)
+			product.GET("", mod.Product.Ctl.List)
+			product.GET("/:id", mod.Product.Ctl.Info)
+			product.PATCH("/:id", mod.Product.Ctl.Update)
+			product.DELETE("/:id", mod.Product.Ctl.Delete)
+		}
+
+		productImage := system.Group("/product-images")
+		{
+			productImage.POST("", mod.ProductImage.Ctl.Create)
+			productImage.GET("", mod.ProductImage.Ctl.List)
+			productImage.GET("/:id", mod.ProductImage.Ctl.Info)
+			productImage.PATCH("/:id", mod.ProductImage.Ctl.Update)
+			productImage.DELETE("/:id", mod.ProductImage.Ctl.Delete)
+		}
 	}
 }

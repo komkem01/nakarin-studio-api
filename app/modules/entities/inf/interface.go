@@ -107,3 +107,19 @@ type MemberAddressEntity interface {
 	ListMemberAddresses(ctx context.Context, memberID *string, provinceID *string, districtID *string, subDistrictID *string, zipcodeID *string, phone *string) ([]*ent.MemberAddressEntity, error)
 	DeleteMemberAddressByID(ctx context.Context, id string) error
 }
+
+type ProductEntity interface {
+	CreateProduct(ctx context.Context, name string, description *string, price float64, isActive bool, isAvailable bool, sortOrder int) (*ent.ProductEntity, error)
+	GetProductByID(ctx context.Context, id string) (*ent.ProductEntity, error)
+	UpdateProductByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, sortOrder *int) (*ent.ProductEntity, error)
+	ListProducts(ctx context.Context, name *string, isActive *bool, isAvailable *bool) ([]*ent.ProductEntity, error)
+	DeleteProductByID(ctx context.Context, id string) error
+}
+
+type ProductImageEntity interface {
+	CreateProductImage(ctx context.Context, productID string, imageURL string, altText *string, sortOrder int, isActive bool) (*ent.ProductImageEntity, error)
+	GetProductImageByID(ctx context.Context, id string) (*ent.ProductImageEntity, error)
+	UpdateProductImageByID(ctx context.Context, id string, productID *string, imageURL *string, altText *string, sortOrder *int, isActive *bool) (*ent.ProductImageEntity, error)
+	ListProductImages(ctx context.Context, productID *string, isActive *bool) ([]*ent.ProductImageEntity, error)
+	DeleteProductImageByID(ctx context.Context, id string) error
+}
