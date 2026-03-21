@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *Service) CreateProduct(ctx context.Context, name string, description *string, price float64, isActive bool, isAvailable bool, sortOrder int) (*ent.ProductEntity, error) {
+func (s *Service) CreateProduct(ctx context.Context, name string, description *string, price float64, isActive bool, isAvailable bool, prepTime int, sortOrder int) (*ent.ProductEntity, error) {
 	nameValue := strings.TrimSpace(name)
 	if nameValue == "" {
 		return nil, fmt.Errorf("name is required")
@@ -20,6 +20,10 @@ func (s *Service) CreateProduct(ctx context.Context, name string, description *s
 		return nil, fmt.Errorf("price must be greater than or equal to 0")
 	}
 
+	if prepTime < 0 {
+		return nil, fmt.Errorf("prep_time must be greater than or equal to 0")
+	}
+
 	model := &ent.ProductEntity{
 		ID:          uuid.New(),
 		Name:        nameValue,
@@ -27,6 +31,7 @@ func (s *Service) CreateProduct(ctx context.Context, name string, description *s
 		Price:       price,
 		IsActive:    isActive,
 		IsAvailable: isAvailable,
+		PrepTime:    prepTime,
 		SortOrder:   sortOrder,
 	}
 
@@ -73,7 +78,7 @@ func (s *Service) ListProducts(ctx context.Context, name *string, isActive *bool
 	return items, nil
 }
 
-func (s *Service) UpdateProductByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, sortOrder *int) (*ent.ProductEntity, error) {
+func (s *Service) UpdateProductByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, prepTime *int, sortOrder *int) (*ent.ProductEntity, error) {
 	uid, err := uuid.Parse(id)
 	if err != nil {
 		return nil, err
@@ -106,11 +111,17 @@ func (s *Service) UpdateProductByID(ctx context.Context, id string, name *string
 	if isAvailable != nil {
 		model.IsAvailable = *isAvailable
 	}
+	if prepTime != nil {
+		if *prepTime < 0 {
+			return nil, fmt.Errorf("prep_time must be greater than or equal to 0")
+		}
+		model.PrepTime = *prepTime
+	}
 	if sortOrder != nil {
 		model.SortOrder = *sortOrder
 	}
 
-	_, err = s.db.NewUpdate().Model(model).WherePK().Column("name", "description", "price", "is_active", "is_available", "sort_order", "updated_at").Exec(ctx)
+	_, err = s.db.NewUpdate().Model(model).WherePK().Column("name", "description", "price", "is_active", "is_available", "prep_time", "sort_order", "updated_at").Exec(ctx)
 	if err != nil {
 		return nil, err
 	}

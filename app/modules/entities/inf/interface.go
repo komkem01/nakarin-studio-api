@@ -2,6 +2,7 @@ package entitiesinf
 
 import (
 	"context"
+	"time"
 
 	"nakarin-studio/app/modules/entities/ent"
 
@@ -69,10 +70,11 @@ type ZipcodeEntity interface {
 }
 
 type BookingEntity interface {
-	CreateBooking(ctx context.Context, bookingNo string, status *string, payment *string) (*ent.BookingEntity, error)
+	CreateBooking(ctx context.Context, bookingNo string, status *string, payment *string, cancelledReason *string, internalNote *string, trackingAttemptCount *int, lastTrackingAt *time.Time, deliveryMemberAddressID *string, deliveryFirstName *string, deliveryLastName *string, deliveryPhone *string, deliveryNo *string, deliveryVillage *string, deliveryStreet *string, deliveryProvinceID *string, deliveryDistrictID *string, deliverySubDistrictID *string, deliveryZipcodeID *string, deliveryNote *string) (*ent.BookingEntity, error)
 	GetBookingByID(ctx context.Context, id string) (*ent.BookingEntity, error)
-	UpdateBookingByID(ctx context.Context, id string, bookingNo *string, status *string, payment *string) (*ent.BookingEntity, error)
-	ListBookings(ctx context.Context, status *string, payment *string) ([]*ent.BookingEntity, error)
+	GetBookingByBookingNoAndPhone(ctx context.Context, bookingNo string, phone string) (*ent.BookingEntity, error)
+	UpdateBookingByID(ctx context.Context, id string, bookingNo *string, status *string, payment *string, cancelledReason *string, internalNote *string, trackingAttemptCount *int, lastTrackingAt *time.Time, deliveryMemberAddressID *string, deliveryFirstName *string, deliveryLastName *string, deliveryPhone *string, deliveryNo *string, deliveryVillage *string, deliveryStreet *string, deliveryProvinceID *string, deliveryDistrictID *string, deliverySubDistrictID *string, deliveryZipcodeID *string, deliveryNote *string) (*ent.BookingEntity, error)
+	ListBookings(ctx context.Context, status *string, payment *string, bookingNo *string, phone *string, createdAtFrom *time.Time, createdAtTo *time.Time) ([]*ent.BookingEntity, error)
 	DeleteBookingByID(ctx context.Context, id string) error
 }
 
@@ -109,9 +111,9 @@ type MemberAddressEntity interface {
 }
 
 type ProductEntity interface {
-	CreateProduct(ctx context.Context, name string, description *string, price float64, isActive bool, isAvailable bool, sortOrder int) (*ent.ProductEntity, error)
+	CreateProduct(ctx context.Context, name string, description *string, price float64, isActive bool, isAvailable bool, prepTime int, sortOrder int) (*ent.ProductEntity, error)
 	GetProductByID(ctx context.Context, id string) (*ent.ProductEntity, error)
-	UpdateProductByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, sortOrder *int) (*ent.ProductEntity, error)
+	UpdateProductByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, prepTime *int, sortOrder *int) (*ent.ProductEntity, error)
 	ListProducts(ctx context.Context, name *string, isActive *bool, isAvailable *bool) ([]*ent.ProductEntity, error)
 	DeleteProductByID(ctx context.Context, id string) error
 }
@@ -122,4 +124,37 @@ type ProductImageEntity interface {
 	UpdateProductImageByID(ctx context.Context, id string, productID *string, imageURL *string, altText *string, sortOrder *int, isActive *bool) (*ent.ProductImageEntity, error)
 	ListProductImages(ctx context.Context, productID *string, isActive *bool) ([]*ent.ProductImageEntity, error)
 	DeleteProductImageByID(ctx context.Context, id string) error
+}
+
+type BookingItemEntity interface {
+	CreateBookingItem(ctx context.Context, bookingID string, productID string, productName string, unitPriceAtBooking float64, quantity int, lineTotal float64, note *string, sortOrder int) (*ent.BookingItemEntity, error)
+	GetBookingItemByID(ctx context.Context, id string) (*ent.BookingItemEntity, error)
+	UpdateBookingItemByID(ctx context.Context, id string, bookingID *string, productID *string, productName *string, unitPriceAtBooking *float64, quantity *int, lineTotal *float64, note *string, sortOrder *int) (*ent.BookingItemEntity, error)
+	ListBookingItems(ctx context.Context, bookingID *string, productID *string) ([]*ent.BookingItemEntity, error)
+	DeleteBookingItemByID(ctx context.Context, id string) error
+}
+
+type PaymentEntity interface {
+	CreatePayment(ctx context.Context, bookingID string, channel *string, amount float64, depositAmount float64, status *string, proofURL *string, note *string, paidAt *time.Time) (*ent.PaymentEntity, error)
+	GetPaymentByID(ctx context.Context, id string) (*ent.PaymentEntity, error)
+	UpdatePaymentByID(ctx context.Context, id string, bookingID *string, channel *string, amount *float64, depositAmount *float64, status *string, proofURL *string, note *string, paidAt *time.Time) (*ent.PaymentEntity, error)
+	ListPayments(ctx context.Context, bookingID *string, channel *string, status *string) ([]*ent.PaymentEntity, error)
+	DeletePaymentByID(ctx context.Context, id string) error
+}
+
+type BookingStatusLogEntity interface {
+	CreateBookingStatusLog(ctx context.Context, bookingID string, fromStatus *string, toStatus string, changedBy *string, changedByRole *string, reason *string, changedAt *time.Time) (*ent.BookingStatusLogEntity, error)
+	GetBookingStatusLogByID(ctx context.Context, id string) (*ent.BookingStatusLogEntity, error)
+	UpdateBookingStatusLogByID(ctx context.Context, id string, bookingID *string, fromStatus *string, toStatus *string, changedBy *string, changedByRole *string, reason *string, changedAt *time.Time) (*ent.BookingStatusLogEntity, error)
+	ListBookingStatusLogs(ctx context.Context, bookingID *string, toStatus *string) ([]*ent.BookingStatusLogEntity, error)
+	DeleteBookingStatusLogByID(ctx context.Context, id string) error
+}
+
+type AdminEntity interface {
+	CreateAdmin(ctx context.Context, memberID *string, username string, passwordHash string, displayName *string, lastLoginAt *time.Time, isActive bool) (*ent.AdminEntity, error)
+	GetAdminByID(ctx context.Context, id string) (*ent.AdminEntity, error)
+	GetAdminByUsername(ctx context.Context, username string) (*ent.AdminEntity, error)
+	UpdateAdminByID(ctx context.Context, id string, memberID *string, username *string, passwordHash *string, displayName *string, lastLoginAt *time.Time, isActive *bool) (*ent.AdminEntity, error)
+	ListAdmins(ctx context.Context, memberID *string, username *string, isActive *bool) ([]*ent.AdminEntity, error)
+	DeleteAdminByID(ctx context.Context, id string) error
 }

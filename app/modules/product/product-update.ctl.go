@@ -19,7 +19,7 @@ func (c *Controller) Update(ctx *gin.Context) {
 		return
 	}
 
-	item, err := c.svc.UpdateByID(ctx.Request.Context(), uri.ID, req.Name, req.Description, req.Price, req.IsActive, req.IsAvailable, req.SortOrder)
+	item, err := c.svc.UpdateByID(ctx.Request.Context(), uri.ID, req.Name, req.Description, req.Price, req.IsActive, req.IsAvailable, req.PrepTime, req.SortOrder)
 	if err != nil {
 		base.InternalServerError(ctx, "product-update-failed", nil)
 		return

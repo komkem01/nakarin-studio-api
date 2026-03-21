@@ -14,8 +14,8 @@ type Module struct {
 	Ctl    *Controller
 }
 
-func New(conf *config.Config[Config], db entitiesinf.BookingEntity) *Module {
+func New(conf *config.Config[Config], db entitiesinf.BookingEntity, detailDB entitiesinf.BookingDetailEntity, itemDB entitiesinf.BookingItemEntity, paymentDB entitiesinf.PaymentEntity, statusLogDB entitiesinf.BookingStatusLogEntity) *Module {
 	tracer := otel.Tracer("nakarin-studio.modules.booking")
-	svc := newService(&Options{Config: conf, tracer: tracer, db: db})
+	svc := newService(&Options{Config: conf, tracer: tracer, db: db, detailDB: detailDB, itemDB: itemDB, paymentDB: paymentDB, statusLogDB: statusLogDB})
 	return &Module{tracer: tracer, Svc: svc, Ctl: newController(tracer, svc)}
 }

@@ -13,7 +13,7 @@ func (c *Controller) List(ctx *gin.Context) {
 		return
 	}
 
-	items, err := c.svc.List(ctx.Request.Context(), req.Status, req.Payment)
+	items, err := c.svc.List(ctx.Request.Context(), req.Status, req.Payment, req.BookingNo, req.Phone, req.CreatedAtFrom, req.CreatedAtTo)
 	if err != nil {
 		base.InternalServerError(ctx, "booking-list-failed", nil)
 		return

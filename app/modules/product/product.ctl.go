@@ -26,6 +26,7 @@ type CreateRequest struct {
 	Price       float64 `json:"price" binding:"required"`
 	IsActive    *bool   `json:"is_active"`
 	IsAvailable *bool   `json:"is_available"`
+	PrepTime    *int    `json:"prep_time"`
 	SortOrder   *int    `json:"sort_order"`
 }
 
@@ -35,6 +36,7 @@ type UpdateRequest struct {
 	Price       *float64 `json:"price"`
 	IsActive    *bool    `json:"is_active"`
 	IsAvailable *bool    `json:"is_available"`
+	PrepTime    *int     `json:"prep_time"`
 	SortOrder   *int     `json:"sort_order"`
 }
 

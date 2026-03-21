@@ -1,8 +1,11 @@
 package config
 
 import (
+	"nakarin-studio/app/modules/admin"
 	"nakarin-studio/app/modules/booking"
 	"nakarin-studio/app/modules/bookingdetail"
+	"nakarin-studio/app/modules/bookingitem"
+	"nakarin-studio/app/modules/bookingstatuslog"
 	"nakarin-studio/app/modules/district"
 	"nakarin-studio/app/modules/example"
 	exampletwo "nakarin-studio/app/modules/example-two"
@@ -10,6 +13,7 @@ import (
 	"nakarin-studio/app/modules/member"
 	"nakarin-studio/app/modules/memberaddress"
 	"nakarin-studio/app/modules/memberbooking"
+	"nakarin-studio/app/modules/payment"
 	"nakarin-studio/app/modules/prefix"
 	"nakarin-studio/app/modules/product"
 	"nakarin-studio/app/modules/productimage"
@@ -46,19 +50,23 @@ type Config struct {
 	Kafka kafka.Config
 	Log   log.Option
 
-	Gender        gender.Config
-	Prefix        prefix.Config
-	Province      province.Config
-	District      district.Config
-	SubDistrict   subdistrict.Config
-	Zipcode       zipcode.Config
-	Booking       booking.Config
-	BookingDetail bookingdetail.Config
-	Member        member.Config
-	MemberAddress memberaddress.Config
-	MemberBooking memberbooking.Config
-	Product       product.Config
-	ProductImage  productimage.Config
+	Gender           gender.Config
+	Prefix           prefix.Config
+	Province         province.Config
+	District         district.Config
+	SubDistrict      subdistrict.Config
+	Zipcode          zipcode.Config
+	Booking          booking.Config
+	BookingDetail    bookingdetail.Config
+	Member           member.Config
+	MemberAddress    memberaddress.Config
+	MemberBooking    memberbooking.Config
+	BookingItem      bookingitem.Config
+	Payment          payment.Config
+	BookingStatusLog bookingstatuslog.Config
+	Admin            admin.Config
+	Product          product.Config
+	ProductImage     productimage.Config
 
 	Example example.Config
 

@@ -4,8 +4,11 @@ import (
 	"log/slog"
 	"sync"
 
+	"nakarin-studio/app/modules/admin"
 	"nakarin-studio/app/modules/booking"
 	"nakarin-studio/app/modules/bookingdetail"
+	"nakarin-studio/app/modules/bookingitem"
+	"nakarin-studio/app/modules/bookingstatuslog"
 	"nakarin-studio/app/modules/district"
 	"nakarin-studio/app/modules/entities"
 	"nakarin-studio/app/modules/example"
@@ -13,6 +16,7 @@ import (
 	"nakarin-studio/app/modules/member"
 	"nakarin-studio/app/modules/memberaddress"
 	"nakarin-studio/app/modules/memberbooking"
+	"nakarin-studio/app/modules/payment"
 	"nakarin-studio/app/modules/prefix"
 	"nakarin-studio/app/modules/product"
 	"nakarin-studio/app/modules/productimage"
@@ -33,26 +37,30 @@ import (
 )
 
 type Modules struct {
-	Conf          *config.Module[appConf.Config]
-	Specs         *specs.Module
-	Log           *log.Module
-	OTEL          *collector.Module
-	Sentry        *sentry.Module
-	DB            *database.DatabaseModule
-	ENT           *entities.Module
-	Gender        *gender.Module
-	Prefix        *prefix.Module
-	Province      *province.Module
-	District      *district.Module
-	SubDistrict   *subdistrict.Module
-	Zipcode       *zipcode.Module
-	Booking       *booking.Module
-	BookingDetail *bookingdetail.Module
-	Member        *member.Module
-	MemberAddress *memberaddress.Module
-	MemberBooking *memberbooking.Module
-	Product       *product.Module
-	ProductImage  *productimage.Module
+	Conf             *config.Module[appConf.Config]
+	Specs            *specs.Module
+	Log              *log.Module
+	OTEL             *collector.Module
+	Sentry           *sentry.Module
+	DB               *database.DatabaseModule
+	ENT              *entities.Module
+	Gender           *gender.Module
+	Prefix           *prefix.Module
+	Province         *province.Module
+	District         *district.Module
+	SubDistrict      *subdistrict.Module
+	Zipcode          *zipcode.Module
+	Booking          *booking.Module
+	BookingDetail    *bookingdetail.Module
+	Member           *member.Module
+	MemberAddress    *memberaddress.Module
+	MemberBooking    *memberbooking.Module
+	BookingItem      *bookingitem.Module
+	Payment          *payment.Module
+	BookingStatusLog *bookingstatuslog.Module
+	Admin            *admin.Module
+	Product          *product.Module
+	ProductImage     *productimage.Module
 	// Kafka *kafka.Module
 	Example  *example.Module
 	Example2 *exampletwo.Module
@@ -77,39 +85,54 @@ func modulesInit() {
 	districtMod := district.New(config.Conf[district.Config](confMod.Svc), entitiesMod.Svc)
 	subDistrictMod := subdistrict.New(config.Conf[subdistrict.Config](confMod.Svc), entitiesMod.Svc)
 	zipcodeMod := zipcode.New(config.Conf[zipcode.Config](confMod.Svc), entitiesMod.Svc)
-	bookingMod := booking.New(config.Conf[booking.Config](confMod.Svc), entitiesMod.Svc)
+	bookingMod := booking.New(
+		config.Conf[booking.Config](confMod.Svc),
+		entitiesMod.Svc,
+		entitiesMod.Svc,
+		entitiesMod.Svc,
+		entitiesMod.Svc,
+		entitiesMod.Svc,
+	)
 	bookingDetailMod := bookingdetail.New(config.Conf[bookingdetail.Config](confMod.Svc), entitiesMod.Svc)
 	memberMod := member.New(config.Conf[member.Config](confMod.Svc), entitiesMod.Svc)
 	memberAddressMod := memberaddress.New(config.Conf[memberaddress.Config](confMod.Svc), entitiesMod.Svc)
 	memberBookingMod := memberbooking.New(config.Conf[memberbooking.Config](confMod.Svc), entitiesMod.Svc)
+	bookingItemMod := bookingitem.New(config.Conf[bookingitem.Config](confMod.Svc), entitiesMod.Svc)
+	paymentMod := payment.New(config.Conf[payment.Config](confMod.Svc), entitiesMod.Svc)
+	bookingStatusLogMod := bookingstatuslog.New(config.Conf[bookingstatuslog.Config](confMod.Svc), entitiesMod.Svc)
+	adminMod := admin.New(config.Conf[admin.Config](confMod.Svc), entitiesMod.Svc)
 	productMod := product.New(config.Conf[product.Config](confMod.Svc), entitiesMod.Svc)
 	productImageMod := productimage.New(config.Conf[productimage.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod := example.New(config.Conf[example.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod2 := exampletwo.New(config.Conf[exampletwo.Config](confMod.Svc), entitiesMod.Svc)
 	// kafka := kafka.New(&conf.Kafka)
 	mod = &Modules{
-		Conf:          confMod,
-		Specs:         specsMod,
-		Log:           logMod,
-		OTEL:          otel,
-		Sentry:        sentryMod,
-		DB:            db,
-		ENT:           entitiesMod,
-		Gender:        genderMod,
-		Prefix:        prefixMod,
-		Province:      provinceMod,
-		District:      districtMod,
-		SubDistrict:   subDistrictMod,
-		Zipcode:       zipcodeMod,
-		Booking:       bookingMod,
-		BookingDetail: bookingDetailMod,
-		Member:        memberMod,
-		MemberAddress: memberAddressMod,
-		MemberBooking: memberBookingMod,
-		Product:       productMod,
-		ProductImage:  productImageMod,
-		Example:       exampleMod,
-		Example2:      exampleMod2,
+		Conf:             confMod,
+		Specs:            specsMod,
+		Log:              logMod,
+		OTEL:             otel,
+		Sentry:           sentryMod,
+		DB:               db,
+		ENT:              entitiesMod,
+		Gender:           genderMod,
+		Prefix:           prefixMod,
+		Province:         provinceMod,
+		District:         districtMod,
+		SubDistrict:      subDistrictMod,
+		Zipcode:          zipcodeMod,
+		Booking:          bookingMod,
+		BookingDetail:    bookingDetailMod,
+		Member:           memberMod,
+		MemberAddress:    memberAddressMod,
+		MemberBooking:    memberBookingMod,
+		BookingItem:      bookingItemMod,
+		Payment:          paymentMod,
+		BookingStatusLog: bookingStatusLogMod,
+		Admin:            adminMod,
+		Product:          productMod,
+		ProductImage:     productImageMod,
+		Example:          exampleMod,
+		Example2:         exampleMod2,
 	}
 
 	log.Infof("all modules initialized")

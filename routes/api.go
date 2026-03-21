@@ -112,6 +112,33 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			memberBooking.DELETE("/:id", mod.MemberBooking.Ctl.Delete)
 		}
 
+		bookingItem := system.Group("/booking-items")
+		{
+			bookingItem.POST("", mod.BookingItem.Ctl.Create)
+			bookingItem.GET("", mod.BookingItem.Ctl.List)
+			bookingItem.GET("/:id", mod.BookingItem.Ctl.Info)
+			bookingItem.PATCH("/:id", mod.BookingItem.Ctl.Update)
+			bookingItem.DELETE("/:id", mod.BookingItem.Ctl.Delete)
+		}
+
+		payment := system.Group("/payments")
+		{
+			payment.POST("", mod.Payment.Ctl.Create)
+			payment.GET("", mod.Payment.Ctl.List)
+			payment.GET("/:id", mod.Payment.Ctl.Info)
+			payment.PATCH("/:id", mod.Payment.Ctl.Update)
+			payment.DELETE("/:id", mod.Payment.Ctl.Delete)
+		}
+
+		bookingStatusLog := system.Group("/booking-status-logs")
+		{
+			bookingStatusLog.POST("", mod.BookingStatusLog.Ctl.Create)
+			bookingStatusLog.GET("", mod.BookingStatusLog.Ctl.List)
+			bookingStatusLog.GET("/:id", mod.BookingStatusLog.Ctl.Info)
+			bookingStatusLog.PATCH("/:id", mod.BookingStatusLog.Ctl.Update)
+			bookingStatusLog.DELETE("/:id", mod.BookingStatusLog.Ctl.Delete)
+		}
+
 		memberAddress := system.Group("/member-addresses")
 		{
 			memberAddress.POST("", mod.MemberAddress.Ctl.Create)
@@ -137,6 +164,46 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			productImage.GET("/:id", mod.ProductImage.Ctl.Info)
 			productImage.PATCH("/:id", mod.ProductImage.Ctl.Update)
 			productImage.DELETE("/:id", mod.ProductImage.Ctl.Delete)
+		}
+	}
+}
+
+func apiAdmin(r *gin.RouterGroup, mod *modules.Modules) {
+	admin := r.Group("/admins")
+	{
+		admin.POST("/login", mod.Admin.Ctl.Login)
+		admin.POST("", mod.Admin.Ctl.Create)
+		admin.GET("", mod.Admin.Ctl.List)
+		admin.GET("/:id", mod.Admin.Ctl.Info)
+		admin.PATCH("/:id", mod.Admin.Ctl.Update)
+		admin.DELETE("/:id", mod.Admin.Ctl.Delete)
+	}
+
+	backoffice := r.Group("/backoffice")
+	backoffice.Use(adminAuth(mod))
+	{
+		booking := backoffice.Group("/bookings")
+		{
+			booking.GET("", mod.Booking.Ctl.List)
+			booking.PATCH("/:id/status", mod.Booking.Ctl.TransitionStatus)
+		}
+
+		payment := backoffice.Group("/payments")
+		{
+			payment.PATCH("/:id/proof", mod.Payment.Ctl.UploadProof)
+			payment.PATCH("/:id/approve", mod.Payment.Ctl.Approve)
+			payment.PATCH("/:id/reject", mod.Payment.Ctl.Reject)
+		}
+	}
+}
+
+func apiPublic(r *gin.RouterGroup, mod *modules.Modules) {
+	public := r.Group("/public")
+	{
+		booking := public.Group("/bookings")
+		{
+			booking.POST("/aggregate", mod.Booking.Ctl.AggregateCreate)
+			booking.GET("/tracking", mod.Booking.Ctl.Track)
 		}
 	}
 }

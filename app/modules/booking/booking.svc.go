@@ -8,16 +8,33 @@ import (
 )
 
 type Service struct {
-	tracer trace.Tracer
-	db     entitiesinf.BookingEntity
+	tracer      trace.Tracer
+	db          entitiesinf.BookingEntity
+	detailDB    entitiesinf.BookingDetailEntity
+	itemDB      entitiesinf.BookingItemEntity
+	paymentDB   entitiesinf.PaymentEntity
+	statusLogDB entitiesinf.BookingStatusLogEntity
 }
 
 type Config struct{}
 
 type Options struct {
 	*config.Config[Config]
-	tracer trace.Tracer
-	db     entitiesinf.BookingEntity
+	tracer      trace.Tracer
+	db          entitiesinf.BookingEntity
+	detailDB    entitiesinf.BookingDetailEntity
+	itemDB      entitiesinf.BookingItemEntity
+	paymentDB   entitiesinf.PaymentEntity
+	statusLogDB entitiesinf.BookingStatusLogEntity
 }
 
-func newService(opt *Options) *Service { return &Service{tracer: opt.tracer, db: opt.db} }
+func newService(opt *Options) *Service {
+	return &Service{
+		tracer:      opt.tracer,
+		db:          opt.db,
+		detailDB:    opt.detailDB,
+		itemDB:      opt.itemDB,
+		paymentDB:   opt.paymentDB,
+		statusLogDB: opt.statusLogDB,
+	}
+}
