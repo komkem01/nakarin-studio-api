@@ -92,6 +92,7 @@ func modulesInit() {
 		entitiesMod.Svc,
 		entitiesMod.Svc,
 		entitiesMod.Svc,
+		entitiesMod.Svc,
 	)
 	bookingDetailMod := bookingdetail.New(config.Conf[bookingdetail.Config](confMod.Svc), entitiesMod.Svc)
 	memberMod := member.New(config.Conf[member.Config](confMod.Svc), entitiesMod.Svc)

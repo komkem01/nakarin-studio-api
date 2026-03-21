@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"nakarin-studio/app/modules/entities"
 	entitiesinf "nakarin-studio/app/modules/entities/inf"
 	"nakarin-studio/internal/config"
 
@@ -14,6 +15,7 @@ type Service struct {
 	itemDB      entitiesinf.BookingItemEntity
 	paymentDB   entitiesinf.PaymentEntity
 	statusLogDB entitiesinf.BookingStatusLogEntity
+	txDB        *entities.Service
 }
 
 type Config struct{}
@@ -26,6 +28,7 @@ type Options struct {
 	itemDB      entitiesinf.BookingItemEntity
 	paymentDB   entitiesinf.PaymentEntity
 	statusLogDB entitiesinf.BookingStatusLogEntity
+	txDB        *entities.Service
 }
 
 func newService(opt *Options) *Service {
@@ -36,5 +39,6 @@ func newService(opt *Options) *Service {
 		itemDB:      opt.itemDB,
 		paymentDB:   opt.paymentDB,
 		statusLogDB: opt.statusLogDB,
+		txDB:        opt.txDB,
 	}
 }

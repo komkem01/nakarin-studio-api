@@ -5,11 +5,13 @@ import (
 )
 
 type Service struct {
-	db *bun.DB
+	db   bun.IDB
+	root *bun.DB
 }
 
 func newService(db *bun.DB) *Service {
 	return &Service{
-		db: db,
+		db:   db,
+		root: db,
 	}
 }

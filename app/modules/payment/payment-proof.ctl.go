@@ -1,14 +1,11 @@
 package payment
 
 import (
+	"errors"
 	"nakarin-studio/app/utils/base"
 
 	"github.com/gin-gonic/gin"
 )
-
-type ProofRequest struct {
-	ProofURL string `json:"proof_url" binding:"required"`
-}
 
 type ApproveRejectRequest struct {
 	Note *string `json:"note"`
@@ -20,16 +17,23 @@ func (c *Controller) UploadProof(ctx *gin.Context) {
 		base.BadRequest(ctx, "invalid-id", nil)
 		return
 	}
-	var req ProofRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
-		base.BadRequest(ctx, "invalid-request", nil)
+
+	fileHeader, err := ctx.FormFile("proof")
+	if err != nil {
+		base.BadRequest(ctx, "proof-file-required", nil)
 		return
 	}
-	if err := c.svc.UploadProof(ctx.Request.Context(), uri.ID, req.ProofURL); err != nil {
+
+	proofURL, err := c.svc.UploadProof(ctx.Request.Context(), uri.ID, fileHeader)
+	if err != nil {
+		if errors.Is(err, ErrProofFileInvalid) {
+			base.BadRequest(ctx, "invalid-proof-file", nil)
+			return
+		}
 		base.InternalServerError(ctx, "payment-upload-proof-failed", nil)
 		return
 	}
-	base.Success(ctx, nil, "success")
+	base.Success(ctx, gin.H{"proof_url": proofURL}, "success")
 }
 
 func (c *Controller) Approve(ctx *gin.Context) {

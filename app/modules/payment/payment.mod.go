@@ -16,6 +16,6 @@ type Module struct {
 
 func New(conf *config.Config[Config], db entitiesinf.PaymentEntity) *Module {
 	tracer := otel.Tracer("nakarin-studio.modules.payment")
-	svc := newService(&Options{Config: conf, tracer: tracer, db: db})
+	svc := newService(&Options{Config: conf, tracer: tracer, db: db, storage: newStorageClientFromEnv()})
 	return &Module{tracer: tracer, Svc: svc, Ctl: newController(tracer, svc)}
 }

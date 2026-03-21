@@ -172,6 +172,7 @@ func apiAdmin(r *gin.RouterGroup, mod *modules.Modules) {
 	admin := r.Group("/admins")
 	{
 		admin.POST("/login", mod.Admin.Ctl.Login)
+		admin.POST("/refresh", mod.Admin.Ctl.RefreshToken)
 		admin.POST("", mod.Admin.Ctl.Create)
 		admin.GET("", mod.Admin.Ctl.List)
 		admin.GET("/:id", mod.Admin.Ctl.Info)

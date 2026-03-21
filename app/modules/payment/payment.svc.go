@@ -8,16 +8,20 @@ import (
 )
 
 type Service struct {
-	tracer trace.Tracer
-	db     entitiesinf.PaymentEntity
+	tracer  trace.Tracer
+	db      entitiesinf.PaymentEntity
+	storage *storageClient
 }
 
 type Config struct{}
 
 type Options struct {
 	*config.Config[Config]
-	tracer trace.Tracer
-	db     entitiesinf.PaymentEntity
+	tracer  trace.Tracer
+	db      entitiesinf.PaymentEntity
+	storage *storageClient
 }
 
-func newService(opt *Options) *Service { return &Service{tracer: opt.tracer, db: opt.db} }
+func newService(opt *Options) *Service {
+	return &Service{tracer: opt.tracer, db: opt.db, storage: opt.storage}
+}
