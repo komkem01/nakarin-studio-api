@@ -99,3 +99,11 @@ type MemberBookingEntity interface {
 	ListMemberBookings(ctx context.Context, memberID *string, bookingID *string) ([]*ent.MemberBookingEntity, error)
 	DeleteMemberBookingByID(ctx context.Context, id string) error
 }
+
+type MemberAddressEntity interface {
+	CreateMemberAddress(ctx context.Context, memberID string, firstName string, lastName *string, phone string, no *string, village *string, street *string, provinceID string, districtID string, subDistrictID string, zipcodeID string) (*ent.MemberAddressEntity, error)
+	GetMemberAddressByID(ctx context.Context, id string) (*ent.MemberAddressEntity, error)
+	UpdateMemberAddressByID(ctx context.Context, id string, memberID *string, firstName *string, lastName *string, phone *string, no *string, village *string, street *string, provinceID *string, districtID *string, subDistrictID *string, zipcodeID *string) (*ent.MemberAddressEntity, error)
+	ListMemberAddresses(ctx context.Context, memberID *string, provinceID *string, districtID *string, subDistrictID *string, zipcodeID *string, phone *string) ([]*ent.MemberAddressEntity, error)
+	DeleteMemberAddressByID(ctx context.Context, id string) error
+}

@@ -111,5 +111,14 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			memberBooking.PATCH("/:id", mod.MemberBooking.Ctl.Update)
 			memberBooking.DELETE("/:id", mod.MemberBooking.Ctl.Delete)
 		}
+
+		memberAddress := system.Group("/member-addresses")
+		{
+			memberAddress.POST("", mod.MemberAddress.Ctl.Create)
+			memberAddress.GET("", mod.MemberAddress.Ctl.List)
+			memberAddress.GET("/:id", mod.MemberAddress.Ctl.Info)
+			memberAddress.PATCH("/:id", mod.MemberAddress.Ctl.Update)
+			memberAddress.DELETE("/:id", mod.MemberAddress.Ctl.Delete)
+		}
 	}
 }
