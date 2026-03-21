@@ -6,6 +6,7 @@ import (
 
 	"nakarin-studio/app/modules/entities"
 	"nakarin-studio/app/modules/example"
+	"nakarin-studio/app/modules/gender"
 	"nakarin-studio/app/modules/sentry"
 	"nakarin-studio/app/modules/specs"
 	"nakarin-studio/internal/config"
@@ -27,6 +28,7 @@ type Modules struct {
 	Sentry *sentry.Module
 	DB     *database.DatabaseModule
 	ENT    *entities.Module
+	Gender *gender.Module
 	// Kafka *kafka.Module
 	Example  *example.Module
 	Example2 *exampletwo.Module
@@ -45,6 +47,7 @@ func modulesInit() {
 
 	db := database.New(conf.Database.Sql)
 	entitiesMod := entities.New(db.Svc.DB())
+	genderMod := gender.New(config.Conf[gender.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod := example.New(config.Conf[example.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod2 := exampletwo.New(config.Conf[exampletwo.Config](confMod.Svc), entitiesMod.Svc)
 	// kafka := kafka.New(&conf.Kafka)
@@ -56,6 +59,7 @@ func modulesInit() {
 		Sentry:   sentryMod,
 		DB:       db,
 		ENT:      entitiesMod,
+		Gender:   genderMod,
 		Example:  exampleMod,
 		Example2: exampleMod2,
 	}

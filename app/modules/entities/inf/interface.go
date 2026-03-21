@@ -19,3 +19,11 @@ type ExampleEntity interface {
 type ExampleTwoEntity interface {
 	CreateExampleTwo(ctx context.Context, userID uuid.UUID) (*ent.Example, error)
 }
+
+type GenderEntity interface {
+	CreateGender(ctx context.Context, name string, isActive bool) (*ent.GenderEntity, error)
+	GetGenderByID(ctx context.Context, id string) (*ent.GenderEntity, error)
+	UpdateGenderByID(ctx context.Context, id string, name *string, isActive *bool) (*ent.GenderEntity, error)
+	ListGenders(ctx context.Context, isActive *bool) ([]*ent.GenderEntity, error)
+	DeleteGenderByID(ctx context.Context, id string) error
+}

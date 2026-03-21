@@ -18,3 +18,17 @@ func api(r *gin.RouterGroup, mod *modules.Modules) {
 	r.GET("/example-http", mod.Example.Ctl.GetHttpReq)
 	r.POST("/example", mod.Example.Ctl.Create)
 }
+
+func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
+	system := r.Group("/system")
+	{
+		gender := system.Group("/genders")
+		{
+			gender.POST("", mod.Gender.Ctl.Create)
+			gender.GET("", mod.Gender.Ctl.List)
+			gender.GET("/:id", mod.Gender.Ctl.Info)
+			gender.PATCH("/:id", mod.Gender.Ctl.Update)
+			gender.DELETE("/:id", mod.Gender.Ctl.Delete)
+		}
+	}
+}
