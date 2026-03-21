@@ -7,6 +7,8 @@ import (
 	"nakarin-studio/app/modules/example"
 	exampletwo "nakarin-studio/app/modules/example-two"
 	"nakarin-studio/app/modules/gender"
+	"nakarin-studio/app/modules/member"
+	"nakarin-studio/app/modules/memberbooking"
 	"nakarin-studio/app/modules/prefix"
 	"nakarin-studio/app/modules/province"
 	"nakarin-studio/app/modules/sentry"
@@ -49,6 +51,8 @@ type Config struct {
 	Zipcode       zipcode.Config
 	Booking       booking.Config
 	BookingDetail bookingdetail.Config
+	Member        member.Config
+	MemberBooking memberbooking.Config
 
 	Example example.Config
 

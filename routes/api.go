@@ -93,5 +93,23 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			bookingDetail.PATCH("/:id", mod.BookingDetail.Ctl.Update)
 			bookingDetail.DELETE("/:id", mod.BookingDetail.Ctl.Delete)
 		}
+
+		member := system.Group("/members")
+		{
+			member.POST("", mod.Member.Ctl.Create)
+			member.GET("", mod.Member.Ctl.List)
+			member.GET("/:id", mod.Member.Ctl.Info)
+			member.PATCH("/:id", mod.Member.Ctl.Update)
+			member.DELETE("/:id", mod.Member.Ctl.Delete)
+		}
+
+		memberBooking := system.Group("/member-bookings")
+		{
+			memberBooking.POST("", mod.MemberBooking.Ctl.Create)
+			memberBooking.GET("", mod.MemberBooking.Ctl.List)
+			memberBooking.GET("/:id", mod.MemberBooking.Ctl.Info)
+			memberBooking.PATCH("/:id", mod.MemberBooking.Ctl.Update)
+			memberBooking.DELETE("/:id", mod.MemberBooking.Ctl.Delete)
+		}
 	}
 }

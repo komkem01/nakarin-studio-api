@@ -83,3 +83,19 @@ type BookingDetailEntity interface {
 	ListBookingDetails(ctx context.Context, bookingID *string) ([]*ent.BookingDetailEntity, error)
 	DeleteBookingDetailByID(ctx context.Context, id string) error
 }
+
+type MemberEntity interface {
+	CreateMember(ctx context.Context, genderID string, prefixID *string, role *string, firstName string, lastName *string, phone string) (*ent.MemberEntity, error)
+	GetMemberByID(ctx context.Context, id string) (*ent.MemberEntity, error)
+	UpdateMemberByID(ctx context.Context, id string, genderID *string, prefixID *string, role *string, firstName *string, lastName *string, phone *string) (*ent.MemberEntity, error)
+	ListMembers(ctx context.Context, genderID *string, prefixID *string, role *string, phone *string) ([]*ent.MemberEntity, error)
+	DeleteMemberByID(ctx context.Context, id string) error
+}
+
+type MemberBookingEntity interface {
+	CreateMemberBooking(ctx context.Context, memberID string, bookingID string) (*ent.MemberBookingEntity, error)
+	GetMemberBookingByID(ctx context.Context, id string) (*ent.MemberBookingEntity, error)
+	UpdateMemberBookingByID(ctx context.Context, id string, memberID *string, bookingID *string) (*ent.MemberBookingEntity, error)
+	ListMemberBookings(ctx context.Context, memberID *string, bookingID *string) ([]*ent.MemberBookingEntity, error)
+	DeleteMemberBookingByID(ctx context.Context, id string) error
+}
