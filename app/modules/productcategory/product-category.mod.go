@@ -1,4 +1,4 @@
-package productimage
+package productcategory
 
 import (
 	entitiesinf "nakarin-studio/app/modules/entities/inf"
@@ -14,8 +14,8 @@ type Module struct {
 	Ctl    *Controller
 }
 
-func New(conf *config.Config[Config], db entitiesinf.ProductImageEntity) *Module {
-	tracer := otel.Tracer("nakarin-studio.modules.productimage")
-	svc := newService(&Options{Config: conf, tracer: tracer, db: db, storage: newStorageClientFromEnv()})
+func New(conf *config.Config[Config], db entitiesinf.ProductCategoryEntity) *Module {
+	tracer := otel.Tracer("nakarin-studio.modules.product-category")
+	svc := newService(&Options{Config: conf, tracer: tracer, db: db})
 	return &Module{tracer: tracer, Svc: svc, Ctl: newController(tracer, svc)}
 }

@@ -16,6 +16,7 @@ import (
 	"nakarin-studio/app/modules/payment"
 	"nakarin-studio/app/modules/prefix"
 	"nakarin-studio/app/modules/product"
+	"nakarin-studio/app/modules/productcategory"
 	"nakarin-studio/app/modules/productimage"
 	"nakarin-studio/app/modules/province"
 	"nakarin-studio/app/modules/sentry"
@@ -66,6 +67,7 @@ type Config struct {
 	BookingStatusLog bookingstatuslog.Config
 	Admin            admin.Config
 	Product          product.Config
+	ProductCategory  productcategory.Config
 	ProductImage     productimage.Config
 
 	Example example.Config

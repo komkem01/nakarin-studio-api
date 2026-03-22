@@ -2,7 +2,6 @@ package productimage
 
 import (
 	"nakarin-studio/app/utils/base"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,5 +18,5 @@ func (c *Controller) Delete(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Status(http.StatusNoContent)
+	base.Success(ctx, nil, "success")
 }

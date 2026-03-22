@@ -1,4 +1,4 @@
-package payment
+package productimage
 
 import (
 	"bytes"
@@ -26,7 +26,7 @@ type storageClient struct {
 	enabled bool
 }
 
-const proofMaxSize int64 = 5 * 1024 * 1024
+const productImageMaxSize int64 = 10 * 1024 * 1024
 
 func newStorageClientFromEnv() *storageClient {
 	endpointRaw := strings.TrimSpace(os.Getenv("RAILWAY_STORAGE__ENDPOINT"))
@@ -60,7 +60,6 @@ func parseStorageEndpoint(raw string) (string, bool, string, error) {
 		return "", false, "", err
 	}
 	if u.Scheme == "" {
-		// MinIO client expects endpoint without scheme.
 		return raw, false, strings.TrimRight("https://"+raw, "/"), nil
 	}
 	endpoint := u.Host
@@ -69,22 +68,22 @@ func parseStorageEndpoint(raw string) (string, bool, string, error) {
 	return endpoint, secure, base, nil
 }
 
-func (s *storageClient) uploadProof(ctx context.Context, paymentID string, fileHeader *multipart.FileHeader) (string, error) {
+func (s *storageClient) uploadProductImage(ctx context.Context, productID string, fileHeader *multipart.FileHeader) (string, error) {
 	if s == nil || !s.enabled {
 		return "", fmt.Errorf("storage is not configured")
 	}
 	if fileHeader == nil {
-		return "", fmt.Errorf("proof file is required")
+		return "", fmt.Errorf("image file is required")
 	}
 	if fileHeader.Size <= 0 {
-		return "", fmt.Errorf("proof file is empty")
+		return "", fmt.Errorf("image file is empty")
 	}
-	if fileHeader.Size > proofMaxSize {
-		return "", fmt.Errorf("proof file exceeds 5MB limit")
+	if fileHeader.Size > productImageMaxSize {
+		return "", fmt.Errorf("image file exceeds 10MB limit")
 	}
 
 	ext := strings.ToLower(filepath.Ext(fileHeader.Filename))
-	if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".pdf" {
+	if ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".webp" {
 		return "", fmt.Errorf("invalid file type")
 	}
 
@@ -94,21 +93,21 @@ func (s *storageClient) uploadProof(ctx context.Context, paymentID string, fileH
 	}
 	defer file.Close()
 
-	data, err := io.ReadAll(io.LimitReader(file, proofMaxSize+1))
+	data, err := io.ReadAll(io.LimitReader(file, productImageMaxSize+1))
 	if err != nil {
 		return "", err
 	}
-	if int64(len(data)) > proofMaxSize {
-		return "", fmt.Errorf("proof file exceeds 5MB limit")
+	if int64(len(data)) > productImageMaxSize {
+		return "", fmt.Errorf("image file exceeds 10MB limit")
 	}
 
 	contentType := http.DetectContentType(data)
-	if contentType != "image/jpeg" && contentType != "image/png" && contentType != "application/pdf" {
+	if contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/webp" {
 		return "", fmt.Errorf("invalid file content type")
 	}
 
 	ext = path.Ext(fileHeader.Filename)
-	objectKey := fmt.Sprintf("payment-proofs/%s/%d-%s%s", paymentID, time.Now().Unix(), uuid.NewString(), ext)
+	objectKey := fmt.Sprintf("product-images/%s/%d-%s%s", productID, time.Now().Unix(), uuid.NewString(), ext)
 
 	_, err = s.client.PutObject(ctx, s.bucket, objectKey, bytes.NewReader(data), int64(len(data)), minio.PutObjectOptions{ContentType: contentType})
 	if err != nil {
@@ -118,31 +117,43 @@ func (s *storageClient) uploadProof(ctx context.Context, paymentID string, fileH
 	return fmt.Sprintf("%s/%s/%s", s.baseURL, s.bucket, objectKey), nil
 }
 
-func (s *storageClient) proofViewURL(ctx context.Context, rawURL string) (string, error) {
-	if rawURL == "" {
-		return "", fmt.Errorf("proof url is empty")
+func (s *storageClient) displayImageURL(ctx context.Context, rawURL string) string {
+	if s == nil || !s.enabled {
+		return rawURL
 	}
 
-	if s == nil || !s.enabled || s.client == nil {
-		return rawURL, nil
+	objectKey, ok := s.extractObjectKey(rawURL)
+	if !ok {
+		return rawURL
 	}
 
-	u, err := url.Parse(rawURL)
+	presigned, err := s.client.PresignedGetObject(ctx, s.bucket, objectKey, 24*time.Hour, nil)
 	if err != nil {
-		return rawURL, nil
+		return rawURL
 	}
 
-	key := strings.TrimPrefix(u.Path, "/")
-	key = strings.TrimPrefix(key, s.bucket+"/")
+	return presigned.String()
+}
 
-	if key == "" {
-		return rawURL, nil
+func (s *storageClient) extractObjectKey(rawURL string) (string, bool) {
+	trimmed := strings.TrimSpace(rawURL)
+	if trimmed == "" {
+		return "", false
 	}
 
-	presigned, err := s.client.PresignedGetObject(ctx, s.bucket, key, 15*time.Minute, nil)
+	if !strings.Contains(trimmed, "://") {
+		return strings.TrimPrefix(trimmed, "/"), true
+	}
+
+	u, err := url.Parse(trimmed)
 	if err != nil {
-		return "", err
+		return "", false
 	}
 
-	return presigned.String(), nil
+	pathValue := strings.TrimPrefix(u.Path, "/")
+	if strings.HasPrefix(pathValue, s.bucket+"/") {
+		return strings.TrimPrefix(pathValue, s.bucket+"/"), true
+	}
+
+	return "", false
 }

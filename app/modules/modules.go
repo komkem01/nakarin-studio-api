@@ -19,6 +19,7 @@ import (
 	"nakarin-studio/app/modules/payment"
 	"nakarin-studio/app/modules/prefix"
 	"nakarin-studio/app/modules/product"
+	"nakarin-studio/app/modules/productcategory"
 	"nakarin-studio/app/modules/productimage"
 	"nakarin-studio/app/modules/province"
 	"nakarin-studio/app/modules/sentry"
@@ -60,6 +61,7 @@ type Modules struct {
 	BookingStatusLog *bookingstatuslog.Module
 	Admin            *admin.Module
 	Product          *product.Module
+	ProductCategory  *productcategory.Module
 	ProductImage     *productimage.Module
 	// Kafka *kafka.Module
 	Example  *example.Module
@@ -99,10 +101,11 @@ func modulesInit() {
 	memberAddressMod := memberaddress.New(config.Conf[memberaddress.Config](confMod.Svc), entitiesMod.Svc)
 	memberBookingMod := memberbooking.New(config.Conf[memberbooking.Config](confMod.Svc), entitiesMod.Svc)
 	bookingItemMod := bookingitem.New(config.Conf[bookingitem.Config](confMod.Svc), entitiesMod.Svc)
-	paymentMod := payment.New(config.Conf[payment.Config](confMod.Svc), entitiesMod.Svc)
+	paymentMod := payment.New(config.Conf[payment.Config](confMod.Svc), entitiesMod.Svc, entitiesMod.Svc, entitiesMod.Svc)
 	bookingStatusLogMod := bookingstatuslog.New(config.Conf[bookingstatuslog.Config](confMod.Svc), entitiesMod.Svc)
 	adminMod := admin.New(config.Conf[admin.Config](confMod.Svc), entitiesMod.Svc)
 	productMod := product.New(config.Conf[product.Config](confMod.Svc), entitiesMod.Svc)
+	productCategoryMod := productcategory.New(config.Conf[productcategory.Config](confMod.Svc), entitiesMod.Svc)
 	productImageMod := productimage.New(config.Conf[productimage.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod := example.New(config.Conf[example.Config](confMod.Svc), entitiesMod.Svc)
 	exampleMod2 := exampletwo.New(config.Conf[exampletwo.Config](confMod.Svc), entitiesMod.Svc)
@@ -131,6 +134,7 @@ func modulesInit() {
 		BookingStatusLog: bookingStatusLogMod,
 		Admin:            adminMod,
 		Product:          productMod,
+		ProductCategory:  productCategoryMod,
 		ProductImage:     productImageMod,
 		Example:          exampleMod,
 		Example2:         exampleMod2,

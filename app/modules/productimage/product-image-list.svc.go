@@ -7,5 +7,17 @@ import (
 )
 
 func (s *Service) List(ctx context.Context, productID *string, isActive *bool) ([]*ent.ProductImageEntity, error) {
-	return s.db.ListProductImages(ctx, productID, isActive)
+	items, err := s.db.ListProductImages(ctx, productID, isActive)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range items {
+		if item == nil {
+			continue
+		}
+		item.ImageURL = s.storage.displayImageURL(ctx, item.ImageURL)
+	}
+
+	return items, nil
 }

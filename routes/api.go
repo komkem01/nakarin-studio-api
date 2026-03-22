@@ -157,8 +157,18 @@ func apiSystem(r *gin.RouterGroup, mod *modules.Modules) {
 			product.DELETE("/:id", mod.Product.Ctl.Delete)
 		}
 
+		productCategory := system.Group("/product-categories")
+		{
+			productCategory.POST("", mod.ProductCategory.Ctl.Create)
+			productCategory.GET("", mod.ProductCategory.Ctl.List)
+			productCategory.GET("/:id", mod.ProductCategory.Ctl.Info)
+			productCategory.PATCH("/:id", mod.ProductCategory.Ctl.Update)
+			productCategory.DELETE("/:id", mod.ProductCategory.Ctl.Delete)
+		}
+
 		productImage := system.Group("/product-images")
 		{
+			productImage.POST("/upload", mod.ProductImage.Ctl.Upload)
 			productImage.POST("", mod.ProductImage.Ctl.Create)
 			productImage.GET("", mod.ProductImage.Ctl.List)
 			productImage.GET("/:id", mod.ProductImage.Ctl.Info)
@@ -187,10 +197,13 @@ func apiAdmin(r *gin.RouterGroup, mod *modules.Modules) {
 		{
 			booking.GET("", mod.Booking.Ctl.List)
 			booking.PATCH("/:id/status", mod.Booking.Ctl.TransitionStatus)
+			booking.POST("/:id/convert-to-order", mod.Booking.Ctl.ConvertToOrder)
 		}
 
 		payment := backoffice.Group("/payments")
 		{
+			payment.GET("/pending", mod.Payment.Ctl.PendingQueue)
+			payment.GET("/:id/proof-url", mod.Payment.Ctl.ProofViewURL)
 			payment.PATCH("/:id/proof", mod.Payment.Ctl.UploadProof)
 			payment.PATCH("/:id/approve", mod.Payment.Ctl.Approve)
 			payment.PATCH("/:id/reject", mod.Payment.Ctl.Reject)
@@ -205,6 +218,12 @@ func apiPublic(r *gin.RouterGroup, mod *modules.Modules) {
 		{
 			booking.POST("/aggregate", mod.Booking.Ctl.AggregateCreate)
 			booking.GET("/tracking", mod.Booking.Ctl.Track)
+		}
+
+		payment := public.Group("/payments")
+		{
+			payment.POST("/submit", mod.Payment.Ctl.PublicSubmit)
+			payment.POST("/upload-proof", mod.Payment.Ctl.PublicUploadProof)
 		}
 	}
 }

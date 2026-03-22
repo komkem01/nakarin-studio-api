@@ -13,7 +13,7 @@ func (c *Controller) List(ctx *gin.Context) {
 		return
 	}
 
-	items, err := c.svc.List(ctx.Request.Context(), req.Name, req.IsActive, req.IsAvailable)
+	items, err := c.svc.List(ctx.Request.Context(), req.Name, req.CategoryID, req.IsActive, req.IsAvailable)
 	if err != nil {
 		base.InternalServerError(ctx, "product-list-failed", nil)
 		return

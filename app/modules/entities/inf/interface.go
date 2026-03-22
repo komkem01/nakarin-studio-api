@@ -111,11 +111,19 @@ type MemberAddressEntity interface {
 }
 
 type ProductEntity interface {
-	CreateProduct(ctx context.Context, name string, description *string, price float64, isActive bool, isAvailable bool, prepTime int, sortOrder int) (*ent.ProductEntity, error)
+	CreateProduct(ctx context.Context, name string, categoryID string, description *string, suitableFor *string, onSite *string, receivedItems *string, note *string, price float64, isActive bool, isAvailable bool, prepTime int, sortOrder int) (*ent.ProductEntity, error)
 	GetProductByID(ctx context.Context, id string) (*ent.ProductEntity, error)
-	UpdateProductByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, prepTime *int, sortOrder *int) (*ent.ProductEntity, error)
-	ListProducts(ctx context.Context, name *string, isActive *bool, isAvailable *bool) ([]*ent.ProductEntity, error)
+	UpdateProductByID(ctx context.Context, id string, categoryID *string, name *string, description *string, suitableFor *string, onSite *string, receivedItems *string, note *string, price *float64, isActive *bool, isAvailable *bool, prepTime *int, sortOrder *int) (*ent.ProductEntity, error)
+	ListProducts(ctx context.Context, name *string, categoryID *string, isActive *bool, isAvailable *bool) ([]*ent.ProductEntity, error)
 	DeleteProductByID(ctx context.Context, id string) error
+}
+
+type ProductCategoryEntity interface {
+	CreateProductCategory(ctx context.Context, name string, description *string, isActive bool) (*ent.ProductCategoryEntity, error)
+	GetProductCategoryByID(ctx context.Context, id string) (*ent.ProductCategoryEntity, error)
+	UpdateProductCategoryByID(ctx context.Context, id string, name *string, description *string, isActive *bool) (*ent.ProductCategoryEntity, error)
+	ListProductCategories(ctx context.Context, isActive *bool) ([]*ent.ProductCategoryEntity, error)
+	DeleteProductCategoryByID(ctx context.Context, id string) error
 }
 
 type ProductImageEntity interface {

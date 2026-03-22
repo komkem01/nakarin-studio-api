@@ -30,7 +30,7 @@ func (c *Controller) Create(ctx *gin.Context) {
 		prepTime = *req.PrepTime
 	}
 
-	_, err := c.svc.Create(ctx.Request.Context(), req.Name, req.Description, req.Price, isActive, isAvailable, prepTime, sortOrder)
+	_, err := c.svc.Create(ctx.Request.Context(), req.Name, req.CategoryID, req.Description, req.SuitableFor, req.OnSite, req.ReceivedItems, req.Note, req.Price, isActive, isAvailable, prepTime, sortOrder)
 	if err != nil {
 		base.InternalServerError(ctx, "product-create-failed", nil)
 		return

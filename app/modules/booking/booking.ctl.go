@@ -85,6 +85,15 @@ type TransitionStatusRequest struct {
 	Reason *string `json:"reason"`
 }
 
+type ConvertToOrderRequest struct {
+	Reason *string `json:"reason"`
+}
+
+type ConvertToOrderResponse struct {
+	OrderID string `json:"order_id"`
+	OrderNo string `json:"order_no"`
+}
+
 type AggregateBookingDetailRequest struct {
 	FirstName string  `json:"first_name" binding:"required"`
 	LastName  *string `json:"last_name"`

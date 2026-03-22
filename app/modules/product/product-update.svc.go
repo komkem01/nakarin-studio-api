@@ -6,6 +6,6 @@ import (
 	"nakarin-studio/app/modules/entities/ent"
 )
 
-func (s *Service) UpdateByID(ctx context.Context, id string, name *string, description *string, price *float64, isActive *bool, isAvailable *bool, prepTime *int, sortOrder *int) (*ent.ProductEntity, error) {
-	return s.db.UpdateProductByID(ctx, id, name, description, price, isActive, isAvailable, prepTime, sortOrder)
+func (s *Service) UpdateByID(ctx context.Context, id string, categoryID *string, name *string, description *string, suitableFor *string, onSite *string, receivedItems *string, note *string, price *float64, isActive *bool, isAvailable *bool, prepTime *int, sortOrder *int) (*ent.ProductEntity, error) {
+	return s.db.UpdateProductByID(ctx, id, categoryID, name, description, suitableFor, onSite, receivedItems, note, price, isActive, isAvailable, prepTime, sortOrder)
 }
