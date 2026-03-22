@@ -1,6 +1,8 @@
 package booking
 
 import (
+	"errors"
+
 	"nakarin-studio/app/utils/base"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +25,10 @@ func (c *Controller) TransitionStatus(ctx *gin.Context) {
 	adminIDStr, _ := adminID.(string)
 
 	if err := c.svc.TransitionStatus(ctx.Request.Context(), uri.ID, *req.Status, req.Reason, stringOrNil(adminIDStr)); err != nil {
+		if errors.Is(err, ErrInvalidStatusTransition) {
+			base.BadRequest(ctx, "booking-transition-status-invalid", nil)
+			return
+		}
 		base.InternalServerError(ctx, "booking-transition-status-failed", nil)
 		return
 	}

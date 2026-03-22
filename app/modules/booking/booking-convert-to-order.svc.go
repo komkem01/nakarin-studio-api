@@ -3,11 +3,14 @@ package booking
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"nakarin-studio/app/modules/entities"
 	"nakarin-studio/app/modules/entities/ent"
 )
+
+var ErrCannotConvertCanceledBooking = errors.New("cannot convert canceled booking")
 
 func (s *Service) ConvertToOrder(ctx context.Context, bookingID string, reason *string, changedBy *string) (*ent.OrderEntity, error) {
 	if s.txDB == nil {
@@ -22,7 +25,7 @@ func (s *Service) ConvertToOrder(ctx context.Context, bookingID string, reason *
 		}
 
 		if booking.Status == ent.BookingStatusCanceled {
-			return fmt.Errorf("cannot convert canceled booking")
+			return ErrCannotConvertCanceledBooking
 		}
 
 		existingOrder, err := txSvc.GetOrderByBookingID(ctx, bookingID)

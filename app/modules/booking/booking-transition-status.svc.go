@@ -2,8 +2,11 @@ package booking
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
+
+var ErrInvalidStatusTransition = errors.New("invalid booking status transition")
 
 func (s *Service) TransitionStatus(ctx context.Context, bookingID string, toStatus string, reason *string, changedBy *string) error {
 	current, err := s.db.GetBookingByID(ctx, bookingID)
@@ -12,7 +15,7 @@ func (s *Service) TransitionStatus(ctx context.Context, bookingID string, toStat
 	}
 
 	if !canTransitionStatus(string(current.Status), toStatus) {
-		return fmt.Errorf("invalid booking status transition")
+		return fmt.Errorf("%w: %s -> %s", ErrInvalidStatusTransition, current.Status, toStatus)
 	}
 
 	_, err = s.db.UpdateBookingByID(

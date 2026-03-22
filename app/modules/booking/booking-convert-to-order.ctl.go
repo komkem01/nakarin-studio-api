@@ -1,6 +1,8 @@
 package booking
 
 import (
+	"errors"
+
 	"nakarin-studio/app/utils/base"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +26,10 @@ func (c *Controller) ConvertToOrder(ctx *gin.Context) {
 
 	order, err := c.svc.ConvertToOrder(ctx.Request.Context(), uri.ID, req.Reason, stringOrNil(adminIDStr))
 	if err != nil {
+		if errors.Is(err, ErrCannotConvertCanceledBooking) {
+			base.BadRequest(ctx, "booking-convert-to-order-invalid", nil)
+			return
+		}
 		base.InternalServerError(ctx, "booking-convert-to-order-failed", nil)
 		return
 	}
